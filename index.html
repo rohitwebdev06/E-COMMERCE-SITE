@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple E-Commerce</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef2f3;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            animation: fadeIn 1s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .cart {
+            float: right;
+            margin-top: -30px;
+            margin-right: 20px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .products {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            padding: 100px 20px 20px;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+        .product {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            width: 220px;
+            animation: slideUp 0.6s ease-in-out;
+        }
+        .product img {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+        .product:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+        .product img:hover {
+            transform: rotate(5deg);
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background: #0056b3;
+            transform: scale(1.1);
+        }
+        footer {
+            text-align: center;
+            background: #222;
+            color: white;
+            padding: 1rem;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>E-Commerce Store</h1>
+        <div class="cart" onclick="location.href='cart.html'">
+            🛒 Cart (<span id="cart-count">0</span>)
+        </div>
+    </header>
+    
+    <main>
+        <div class="products">
+            <div class="product">
+                <img src="196MS_PMaroon_063cb015-2c57-4b24-b8e1-015b956b6cac.webp" alt="Red Shirt">
+                <h2>Red Shirt</h2>
+                <p>$10.00</p>
+                <button onclick="addToCart(10, 'Red Shirt')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="men-s-jacket-500x500.webp" alt="Blue Jacket">
+                <h2>Blue Jacket</h2>
+                <p>$25.00</p>
+                <button onclick="addToCart(25, 'Blue Jacket')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="-473Wx593H-700420474-green-MODEL.avif" alt="Green Hoodie">
+                <h2>Green Hoodie</h2>
+                <p>$30.00</p>
+                <button onclick="addToCart(30, 'Green Hoodie')">Add to Cart</button>
+            </div>
+            <div class="product">
+                <img src="yellow-tshirt-sunshine-yellow-round-neck-half-sleeve-basics_600x.webp" alt="Yellow T-Shirt">
+                <h2>Yellow T-Shirt</h2>
+                <p>$15.00</p>
+                <button onclick="addToCart(15, 'Yellow T-Shirt')">Add to Cart</button>
+            </div>
+        </div>
+    </main>
+    
+    <footer>
+        <p>Total: $<span id="total">0.00</span></p>
+        <button onclick="checkout()">Checkout</button>
+    </footer>
+
+    <script>
+        let cartCount = 0;
+        let totalPrice = 0;
+
+        function addToCart(price, name) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            cart.push({ name, price });
+            localStorage.setItem("cart", JSON.stringify(cart));
+            cartCount++;
+            totalPrice += price;
+            document.getElementById("cart-count").innerText = cart.length;
+            document.getElementById("total").innerText = totalPrice.toFixed(2);
+        }
+    </script>
+</body>
+</html>

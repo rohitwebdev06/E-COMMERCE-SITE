@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .checkout-container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .cart-items {
+            list-style: none;
+            padding: 0;
+        }
+        .cart-items li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .cart-total {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="email"], input[type="address"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            width: 100%;
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="checkout-container">
+        <h2>Checkout</h2>
+        <ul class="cart-items" id="cart-items">
+            <!-- Cart items will be dynamically added here -->
+        </ul>
+        <p class="cart-total">Total: $<span id="cart-total">0.00</span></p>
+
+        <form id="checkout-form">
+            <input type="text" id="name" placeholder="Enter your name" required>
+            <input type="email" id="email" placeholder="Enter your email" required>
+            <input type="text" id="address" placeholder="Enter your shipping address" required>
+            <button type="submit">Complete Purchase</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            loadCart();
+        });
+
+        function loadCart() {
+            const cart = JSON.parse(localStorage.getItem("cart")) || [];
+            const cartItemsContainer = document.getElementById("cart-items");
+            const cartTotalContainer = document.getElementById("cart-total");
+
+            cartItemsContainer.innerHTML = "";
+            let total = 0;
+
+            cart.forEach(item => {
+                const li = document.createElement("li");
+                li.innerHTML = `${item.name} - $${item.price.toFixed(2)}`;
+                cartItemsContainer.appendChild(li);
+                total += item.price;
+            });
+
+            cartTotalContainer.innerText = total.toFixed(2);
+        }
+
+        document.getElementById("checkout-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const address = document.getElementById("address").value;
+
+            if (name && email && address) {
+                alert("Thank you for your purchase, " + name + "!");
+                localStorage.removeItem("cart");
+                window.location.href = "index.html"; // Redirect to homepage after purchase
+            } else {
+                alert("Please fill in all the fields.");
+            }
+        });
+    </script>
+
+</body>
+</html>
